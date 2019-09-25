@@ -1,0 +1,45 @@
+* {
+    padding: 0;
+    margin: 0;
+    font: 14px;
+}
+
+body {
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+div#container {
+    display: inline-block;
+    border: 1px solid black;
+    width: 29%;
+    height: 29%;
+    display: flex;   
+}
+
+
+div#box {
+    width: 18px;
+    height: 18px;
+    z-index: 1;
+    left: 150px;
+    right: 150px;
+    position: absolute;
+
+}
+
+div#runningPerson{
+    z-index: 1;
+}
+
+div#row {
+    height: 18px;
+    width: 18px;
+    background: red;
+}
+
+
+
