@@ -13,73 +13,100 @@ const map = [
     "W     W W W   W W W W",
     "W WWWWWWW WWWWW W W W",
     "W       W       W   W",
-    "WWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWW"
 ];
 
+const main = document.getElementById("maze");
 
-let container = document.getElementById("container")
-let string = (map.join().replace(/,/g,""))
-function createMap() {
-let mapLength = map[0].length;
-    let mapHeight = map.length;
-    for(let rowIndex = 0; rowIndex <= mapLength; rowIndex++) {
-    let row = document.createElement('div')
-        row.id = "row"
-       
-    for(let colIndex = 0; colIndex <= mapHeight; colIndex++) {
-    let column = document.createElement('div')
-        column.classList.add("cell")
-        column.id = "row"
-        row.appendChild(column);
+for (let rowAbsolute = 0; rowAbsolute < map.length; rowAbsolute++) {
+    let row = map[rowAbsolute];
+    let maze = document.createElement("div");
+    maze.classList.add("mazeRow");
+    for (let columnAbsolute = 0; columnAbsolute < row.length; columnAbsolute++) {
+        let wall = document.createElement("div");
+        wall.dataset.rowIndex = rowAbsolute;
+        wall.dataset.cellIndex = columnAbsolute;
+        maze.appendChild(wall);
+
+            switch (row[columnAbsolute]) {
+                case "W":
+                wall.classList.add("borderWall");
+                wall.dataset.cellType = "border";
+                break;
+
+            case "S":
+                wall.setAttribute("id", "start");
+                wall.dataset.cellType = "start";
+                break;
+
+            case " ":
+                wall.classList.add("blankSpace");
+                wall.dataset.cellType = "floor";
+                break;
+
+            case "F":
+                wall.setAttribute("id", "finish");
+                wall.dataset.cellType = "end";
+                break;
         }
-        container.appendChild(row);    
     }
+    main.appendChild(maze)
 }
 
-createMap();
-let box = Array.from(document.querySelectorAll(".cell"))
-console.log(box)
+let boxTop;
+let boxLeft;
+let x;
+let y;
+const player = document.getElementById("player");
+let start = document.getElementById("start");
+start.appendChild(player);
+let currentPosition = start;
+document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+        case 'ArrowUp':
+            let nextPositionUp = Number(currentPosition.dataset.rowIndex) - 1;
+            let nextMoveUp = document.querySelector("[data-row-index = '" + nextPositionUp + "'][data-cell-index = '" + currentPosition.dataset.cellIndex + "']");
+            if (nextMoveUp.dataset.cellType === "floor") {
+                nextMoveUp.appendChild(player);
+                currentPosition = nextMoveUp;
+            }
+            break;
 
-box.foreach(cell, index => {
-    console.log(cell)
-    cell.id = string[index]
-});
+        case 'ArrowDown':
+            let nextPositionDown = Number(currentPosition.dataset.rowIndex) + 1;
+            let nextMoveDown = document.querySelector("[data-row-index = '" + nextPositionDown + "'][data-cell-index = '" + currentPosition.dataset.cellIndex + "']");
+            if (nextMoveDown.dataset.cellType === "floor") {
+                nextMoveDown.appendChild(player);
+                currentPosition = nextMoveDown;
+            }
+            break;
 
-//Moves player around board
-let boxTop = 150;
-let boxLeft = 150;
+        case 'ArrowLeft':
+            let nextPositionLeft = Number(currentPosition.dataset.cellIndex) - 1;
+            let nextMoveLeft = document.querySelector("[data-row-index = '" + currentPosition.dataset.rowIndex + "'][data-cell-index = '" + nextPositionLeft + "']");
+            if (nextMoveLeft.dataset.cellType === "floor") {
+                nextMoveLeft.appendChild(player);
+                currentPosition = nextMoveLeft;
+            }
+            break;
 
-document.addEventListener('keydown', logKey);
-function logKey(evt) {
-    console.log(evt.code);
-    let playerBox = document.getElementById("box");
-    if (evt.keyCode===38 || evt.keyCode===87) {
-        boxTop -= 14
-        playerBox.style.top = (boxTop) + "px";}
-    if (evt.keyCode===40 || evt.keyCode===83) {
-        boxTop += 14
-        playerBox.style.top = (boxTop) + "px";}
-    if (evt.keyCode===37 || evt.keyCode===65) {
-        boxLeft -= 14
-        playerBox.style.left = (boxLeft) + "px";}
-    if (evt.keyCode===39 || evt.keyCode===68) {
-        boxLeft += 14
-        playerBox.style.left = (boxLeft) + "px";}   
-}
-
-/*const resetButton = document.getElementById("restart");
-resetButton.addEventListener("click", resetGame)
-
-/*function resetGame() {
-    let cells = document.getElementsByIdName('cell')
-  
-    for (cellIndex = 0; cellIndex < cells.length; cellIndex++) {
-      cells[cellIndex].innerHTML = "";
+        case 'ArrowRight':
+            let nextPositionRight = Number(currentPosition.dataset.cellIndex) + 1;
+            let nextMoveRight = document.querySelector("[data-row-index = '" + currentPosition.dataset.rowIndex + "'][data-cell-index = '" + nextPositionRight + "']");
+            if (nextMoveRight.dataset.cellType === "floor") {
+                nextMoveRight.appendChild(player);
+                currentPosition = nextMoveRight;
+            } else if (nextMoveRight.dataset.cellType === "end") {
+                nextMoveRight.appendChild(player);
+                currentPosition = nextMoveRight;
+                setTimeout(function () {
+                    winner = alert("You won!");
+                }, 500);
+            }
+            break;
     }
-    createMap();
-  }
-  
-  Function winCondition {
     
-  }*/
-  
+    document.getElementById("player").style.top = boxTop + "px";
+    document.getElementById("player").style.left = boxLeft + "px";
+    document.getElementById("winningmessage").innerHTML = +winner + " You've Won";
+})
