@@ -30,7 +30,7 @@ for (let rowAbsolute = 0; rowAbsolute < map.length; rowAbsolute++) {
 
             switch (row[columnAbsolute]) {
                 case "W":
-                wall.classList.add("borderWall");
+                wall.classList.add("wall");
                 wall.dataset.cellType = "border";
                 break;
 
@@ -40,7 +40,7 @@ for (let rowAbsolute = 0; rowAbsolute < map.length; rowAbsolute++) {
                 break;
 
             case " ":
-                wall.classList.add("blankSpace");
+                wall.classList.add("walkway");
                 wall.dataset.cellType = "floor";
                 break;
 
