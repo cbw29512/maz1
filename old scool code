@@ -1,0 +1,48 @@
+(event) => {
+    switch (event.key) {
+        case 'ArrowUp':
+            let nextPositionUp = Number(currentPosition.dataset.rowIndex) - 1;
+            let nextMoveUp = document.querySelector("[data-row-index = '" + nextPositionUp + "'][data-cell-index = '" + currentPosition.dataset.cellIndex + "']");
+            if (nextMoveUp.dataset.cellType === "floor") {
+                nextMoveUp.appendChild(player);
+                currentPosition = nextMoveUp;
+            }
+            break;
+
+        case 'ArrowDown':
+            let nextPositionDown = Number(currentPosition.dataset.rowIndex) + 1;
+            let nextMoveDown = document.querySelector("[data-row-index = '" + nextPositionDown + "'][data-cell-index = '" + currentPosition.dataset.cellIndex + "']");
+            if (nextMoveDown.dataset.cellType === "floor") {
+                nextMoveDown.appendChild(player);
+                currentPosition = nextMoveDown;
+            }
+            break;
+
+        case 'ArrowLeft':
+            let nextPositionLeft = Number(currentPosition.dataset.cellIndex) - 1;
+            let nextMoveLeft = document.querySelector("[data-row-index = '" + currentPosition.dataset.rowIndex + "'][data-cell-index = '" + nextPositionLeft + "']");
+            if (nextMoveLeft.dataset.cellType === "floor") {
+                nextMoveLeft.appendChild(player);
+                currentPosition = nextMoveLeft;
+            }
+            break;
+
+        case 'ArrowRight':
+            let nextPositionRight = Number(currentPosition.dataset.cellIndex) + 1;
+            let nextMoveRight = document.querySelector("[data-row-index = '" + currentPosition.dataset.rowIndex + "'][data-cell-index = '" + nextPositionRight + "']");
+            if (nextMoveRight.dataset.cellType === "floor") {
+                nextMoveRight.appendChild(player);
+                currentPosition = nextMoveRight;
+            } else if (nextMoveRight.dataset.cellType === "end") {
+                nextMoveRight.appendChild(player);
+                currentPosition = nextMoveRight;
+                setTimeout(function () {
+                    winner = alert("You won!");
+                }, 500);
+            }
+            break;
+    }
+    
+    document.getElementById("player").style.top = boxTop + "px";
+    document.getElementById("player").style.left = boxLeft + "px";
+    document.getElementById("winningmessage").innerHTML = +winner + " You've Won";
